@@ -50,7 +50,8 @@ out = cv2.VideoWriter(
     cv2.CAP_GSTREAMER,
     0,          
     30,        
-    (640, 480), 
+    # (640, 480), 
+    (320, 240), 
     True        
 )
 
