@@ -27,6 +27,11 @@
 # conn.close()
 import cv2
 import face_recognition
+import numpy as np
+
+face_detect = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+if face_detect.empty():
+    raise IOError("Unable to load the face cascade classifier xml file")
 
 # Mở camera
 cap = cv2.VideoCapture(0)  # hoặc 0 / 1 tùy camera
@@ -43,10 +48,10 @@ gst_str = (
 out = cv2.VideoWriter(
     gst_str,
     cv2.CAP_GSTREAMER,
-    0,          # fourcc (bỏ qua vì GStreamer lo)
-    30,         # fps
-    (640, 480), # kích thước khung hình
-    True        # màu (True = BGR)
+    0,          
+    30,        
+    (640, 480), 
+    True        
 )
 
 if not cap.isOpened() or not out.isOpened():
@@ -58,22 +63,22 @@ while True:
     if not ret:
         break
 
-    # Chuyển sang RGB để face_recognition xử lý
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-    # Tìm tất cả khuôn mặt trong frame
-    face_locations = face_recognition.face_locations(rgb_frame)
-
-    # Vẽ khung cho từng khuôn mặt
-    for (top, right, bottom, left) in face_locations:
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-
+    resize_frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    gray = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2GRAY)
+    face_detection = face_detect.detectMultiScale(gray,1.3,5)
+    for (x,y,w,h) in face_detection:
+        cv2.rectangle(resize_frame,(x,y),(x+w,y+h),(0,0,255),10)
+        gray_roi = gray[y:y+h, x:x+w]
+        color_roi = resize_frame[y:y+h, x:x+w]
     # Gửi frame qua network
-    out.write(frame)
+    out.write(resize_frame)
 
     # (Tuỳ chọn) xem preview ngay trên Pi để debug
     cv2.imshow("Preview", frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imshow("Realtime Detection", resize_frame)
+
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('q') or key == 27:
         break
 
 cap.release()
