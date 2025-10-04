@@ -44,14 +44,14 @@ while True:
     out.write(resize_frame)
 
     
-    cv2.imshow("Preview", frame)
-    cv2.imshow("Realtime Detection", resize_frame)
+    # cv2.imshow("Preview", frame)
+    # cv2.imshow("Realtime Detection", resize_frame)
 
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord('q') or key == 27:
-        break
+    # key = cv2.waitKey(1) & 0xFF
+    # if key == ord('q') or key == 27:
+    #     break
 
 cap.release()
 out.release()
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
 
