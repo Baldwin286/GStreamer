@@ -14,13 +14,15 @@ gst_str = (
     "udpsink host=192.168.1.100 port=5000"
 )
 
+frame_size = (640, 480)
 out = cv2.VideoWriter(
     gst_str,
     cv2.CAP_GSTREAMER,
     0,          
     30,        
     # (640, 480), 
-    (320, 240), 
+    # (320, 240),
+    frame_size, 
     True        
 )
 
@@ -33,17 +35,17 @@ while True:
     if not ret:
         break
 
-    resize_frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    # resize_frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    resize_frame = cv2.resize(frame, frame_size)
     gray = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2GRAY)
     face_detection = face_detect.detectMultiScale(gray,1.3,5)
     for (x,y,w,h) in face_detection:
-        cv2.rectangle(resize_frame,(x,y),(x+w,y+h),(0,0,255),10)
+        cv2.rectangle(resize_frame,(x,y),(x+w,y+h),(0,0,255),3)
         gray_roi = gray[y:y+h, x:x+w]
         color_roi = resize_frame[y:y+h, x:x+w]
     
     out.write(resize_frame)
 
-    
     # cv2.imshow("Preview", frame)
     # cv2.imshow("Realtime Detection", resize_frame)
 
