@@ -14,7 +14,10 @@ gst_str = (
     "udpsink host=192.168.1.100 port=5000"
 )
 
-frame_size = (640, 480)
+#frame_size = (640, 480)
+width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+frame_size = (width, height)
 out = cv2.VideoWriter(
     gst_str,
     cv2.CAP_GSTREAMER,
