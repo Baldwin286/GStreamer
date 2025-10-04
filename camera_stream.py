@@ -7,10 +7,16 @@ if face_detect.empty():
     raise IOError("Unable to load the face cascade classifier xml file")
 
 cap = cv2.VideoCapture(0)  
+# gst_str = (
+#     "appsrc ! videoconvert ! "
+#     "x264enc tune=zerolatency bitrate=4000 speed-preset=superfast ! "
+#     "rtph264pay config-interval=1 pt=96 ! "
+#     "udpsink host=192.168.1.100 port=5000"
+# )
 gst_str = (
-    "appsrc ! videoconvert ! "
-    "x264enc tune=zerolatency bitrate=4000 speed-preset=superfast ! "
-    "rtph264pay config-interval=1 pt=96 ! "
+    "appsrc ! videoconvert ! video/x-raw,format=I420 ! "
+    "v4l2h264enc extra-controls=\"encode,frame_level_rate_control_enable=1,video_bitrate=4000000\" ! "
+    "video/x-h264,profile=baseline ! h264parse ! rtph264pay config-interval=1 pt=96 ! "
     "udpsink host=192.168.1.100 port=5000"
 )
 
