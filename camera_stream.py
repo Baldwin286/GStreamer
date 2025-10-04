@@ -7,12 +7,12 @@ if face_detect.empty():
     raise IOError("Unable to load the face cascade classifier xml file")
 
 cap = cv2.VideoCapture(0)  
-# gst_str = (
-#     "appsrc ! videoconvert ! "
-#     "x264enc tune=zerolatency bitrate=4000 speed-preset=superfast ! "
-#     "rtph264pay config-interval=1 pt=96 ! "
-#     "udpsink host=192.168.1.100 port=5000"
-# )
+gst_str = (
+    "appsrc ! videoconvert ! "
+    "x264enc tune=zerolatency bitrate=4000 speed-preset=superfast ! "
+    "rtph264pay config-interval=1 pt=96 ! "
+    "udpsink host=192.168.1.100 port=5000"
+)
 
 #frame_size = (640, 480)
 width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -24,13 +24,6 @@ if fps == 0:
     fps = 30
 
 print(f"Camera: {width}x{height} @ {fps}fps")
-
-gst_str = (
-    "appsrc ! videoconvert ! video/x-raw,format=NV12,width={w},height={h},framerate={fps}/1 ! "
-    "v4l2h264enc extra-controls=\"encode,frame_level_rate_control_enable=1,video_bitrate=4000000\" ! "
-    "h264parse ! rtph264pay config-interval=1 pt=96 ! "
-    "udpsink host=192.168.1.100 port=5000"
-).format(w=width, h=height, fps=fps)
 
 out = cv2.VideoWriter(
     gst_str,
