@@ -1,17 +1,15 @@
-# import cv2
-# cap = cv2.VideoCapture(
-#     "udpsrc port=5000 caps=application/x-rtp,encoding-name=H264,payload=96 ! "
-#     "rtph264depay ! avdec_h264 ! videoconvert ! appsink",
-#     cv2.CAP_GSTREAMER
-# )
 import cv2
 
-gst_str = (
-    "udpsrc port=5000 caps=application/x-rtp,encoding-name=H264,payload=96 ! "
-    "rtph264depay ! avdec_h264 ! videoconvert ! appsink"
+pipeline = (
+    'udpsrc port=5000 caps="application/x-rtp,encoding-name=H264,payload=96" ! '
+    'rtph264depay ! avdec_h264 ! videoconvert ! appsink'
 )
 
-cap = cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)
+cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+
+if not cap.isOpened():
+    print("Không mở được luồng video")
+    exit()
 
 while True:
     ret, frame = cap.read()
@@ -19,9 +17,7 @@ while True:
         print("Không nhận được frame")
         break
 
-    # Hiển thị frame (đã có bounding box từ Pi)
-    cv2.imshow("Stream từ Pi", frame)
-
+    cv2.imshow("Video từ Drone", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

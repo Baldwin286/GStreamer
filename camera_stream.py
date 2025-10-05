@@ -17,11 +17,8 @@ gst_str = (
 width = 320
 height = 240
 frame_size = (width, height)
-# width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-# height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps    = int(cap.get(cv2.CAP_PROP_FPS))
 
-# frame_size = (width, height)
 if fps == 0:
     fps = 30
 
@@ -31,8 +28,6 @@ out = cv2.VideoWriter(
     gst_str,
     cv2.CAP_GSTREAMER,
     0,                
-    # (640, 480), 
-    # (320, 240),
     fps,
     frame_size, 
     True        
