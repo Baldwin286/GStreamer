@@ -47,26 +47,26 @@ def stream_and_detect():
         if not ret:
             break
 
-    curr_time = time.time()
-    fps_calc = 1 / (curr_time - prev_time)
-    prev_time = curr_time
-    print(f"FPS: {fps_calc:.2f}")
+        curr_time = time.time()
+        fps_calc = 1 / (curr_time - prev_time)
+        prev_time = curr_time
+        print(f"FPS: {fps_calc:.2f}")
 
-    resize_frame = cv2.resize(frame, frame_size, interpolation=cv2.INTER_AREA)
-    gray = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2GRAY)
+        resize_frame = cv2.resize(frame, frame_size, interpolation=cv2.INTER_AREA)
+        gray = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2GRAY)
 
-    face_detection = face_detect.detectMultiScale(gray,1.3,5)
+        face_detection = face_detect.detectMultiScale(gray,1.3,5)
 
-    for (x,y,w,h) in face_detection:
-        cv2.rectangle(resize_frame,(x,y),(x+w,y+h),(0,0,255),3)
+        for (x,y,w,h) in face_detection:
+            cv2.rectangle(resize_frame,(x,y),(x+w,y+h),(0,0,255),3)
         # gray_roi = gray[y:y+h, x:x+w]
         # color_roi = resize_frame[y:y+h, x:x+w]
     
         out.write(resize_frame)
 
 
-        cap.release()
-        out.release()
+    cap.release()
+    out.release()
 
 if __name__ == "__main__":
     stream_and_detect()
