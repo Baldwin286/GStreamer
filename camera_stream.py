@@ -4,8 +4,6 @@ import numpy as np
 
 width = 320
 height = 240
-host_ip = "192.168.1.100"
-port_number = 5000
 
 def stream_and_detect():
     face_detect = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
@@ -14,10 +12,10 @@ def stream_and_detect():
 
     cap = cv2.VideoCapture(0)  
     gst_str = (
-        f"appsrc ! videoconvert ! "
-        f"x264enc tune=zerolatency bitrate=1000 speed-preset=superfast ! "
-        f"rtph264pay config-interval=1 pt=96 ! "
-        f"udpsink host={host_ip} port={port_number}"
+        "appsrc ! videoconvert ! "
+        "x264enc tune=zerolatency bitrate=1000 speed-preset=superfast ! "
+        "rtph264pay config-interval=1 pt=96 ! "
+        "udpsink host=192.168.1.100 port=5000"
     )
 
 # width = 320
