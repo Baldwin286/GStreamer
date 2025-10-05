@@ -11,7 +11,7 @@ gst_str = (
     "appsrc ! videoconvert ! "
     "x264enc tune=zerolatency bitrate=1000 speed-preset=superfast ! "
     "rtph264pay config-interval=1 pt=96 ! "
-    "udpsink host=192.168.1.255 port=5000 auto-multicast=false"
+    "udpsink host=192.168.1.100 port=5000"
 )
 
 width = 320
