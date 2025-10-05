@@ -14,10 +14,10 @@ def stream_and_detect():
 
     cap = cv2.VideoCapture(0)  
     gst_str = (
-        "appsrc ! videoconvert ! "
-        "x264enc tune=zerolatency bitrate=1000 speed-preset=superfast ! "
-        "rtph264pay config-interval=1 pt=96 ! "
-        "udpsink host={host_ip} port={port_number}"
+        f"appsrc ! videoconvert ! "
+        f"x264enc tune=zerolatency bitrate=1000 speed-preset=superfast ! "
+        f"rtph264pay config-interval=1 pt=96 ! "
+        f"udpsink host={host_ip} port={port_number}"
     )
 
 # width = 320
@@ -64,11 +64,11 @@ def stream_and_detect():
         # gray_roi = gray[y:y+h, x:x+w]
         # color_roi = resize_frame[y:y+h, x:x+w]
     
-    out.write(resize_frame)
+        out.write(resize_frame)
 
 
-    cap.release()
-    out.release()
+        cap.release()
+        out.release()
 
 if __name__ == "__main__":
     stream_and_detect()
