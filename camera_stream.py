@@ -28,7 +28,7 @@ def stream_and_detect_face():
 
     gst_str = (
         f"appsrc ! videoconvert ! "
-        f"x264enc tune=zerolatency bitrate=1000 speed-preset=superfast ! "
+        f"v4l2h264enc extra-controls=\"encode,profile=baseline\" ! "
         f"rtph264pay config-interval=1 pt=96 ! "
         f"udpsink host={host_ip} port={port}"
     )
